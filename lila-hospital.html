@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LILA Hospital — Redefining Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #F7F4EF;
+    --bg2: #EEE9E0;
+    --surface: #FFFFFF;
+    --deep: #1A2332;
+    --teal: #0E6B6B;
+    --teal-light: #12908F;
+    --teal-pale: #E6F4F4;
+    --gold: #B8832A;
+    --muted: #7A7A7A;
+    --border: rgba(14,107,107,0.15);
+    --shadow: 0 4px 32px rgba(14,107,107,0.08);
+    --shadow-lg: 0 12px 48px rgba(14,107,107,0.14);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--bg);
+    color: var(--deep);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSOR */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--teal);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.12s ease;
+  }
+  .cursor-ring {
+    width: 34px; height: 34px;
+    border: 1.5px solid rgba(14,107,107,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 1.6rem 5vw;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(247,244,239,0.88);
+    backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--teal);
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .nav-logo-mark {
+    width: 30px; height: 30px;
+    background: var(--teal);
+    border-radius: 6px;
+    display: grid; place-items: center;
+  }
+  .nav-logo-mark svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2; }
+
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(26,35,50,0.55); text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal); }
+
+  .nav-cta {
+    font-size: 0.8rem; font-weight: 500;
+    background: var(--teal); color: #fff;
+    padding: 0.6rem 1.5rem; border-radius: 4px;
+    text-decoration: none; transition: all 0.3s;
+    box-shadow: 0 4px 16px rgba(14,107,107,0.25);
+  }
+  .nav-cta:hover { background: var(--teal-light); transform: translateY(-1px); }
+
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; border: none; background: none; padding: 4px; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--teal); border-radius: 2px; transition: all 0.3s; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 5vw 6rem;
+    gap: 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(14,107,107,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -100px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(184,131,42,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(14,107,107,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(14,107,107,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-eyebrow {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.8rem;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-eyebrow::before { content: ''; display: block; width: 36px; height: 1.5px; background: var(--teal); }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5.5vw, 5rem);
+    font-weight: 300; line-height: 1.08; letter-spacing: -0.02em;
+    color: var(--deep); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.9s 0.35s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--teal); }
+
+  .hero-sub {
+    font-size: 1rem; line-height: 1.75;
+    color: rgba(26,35,50,0.55); max-width: 420px; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.9s 0.65s forwards;
+  }
+
+  .btn-primary {
+    background: var(--teal); color: #fff; border: none;
+    padding: 0.9rem 2rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 500; border-radius: 6px;
+    cursor: none; transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(14,107,107,0.3);
+  }
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(14,107,107,0.35); }
+
+  .btn-outline {
+    background: transparent; color: var(--teal);
+    border: 1.5px solid var(--teal);
+    padding: 0.9rem 2rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 500; border-radius: 6px;
+    cursor: none; transition: all 0.3s;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-outline:hover { background: var(--teal-pale); }
+  .btn-outline svg { transition: transform 0.25s; }
+  .btn-outline:hover svg { transform: translateX(4px); }
+
+  .hero-stats {
+    display: flex; gap: 2.5rem; margin-top: 4rem;
+    padding-top: 2.5rem; border-top: 1px solid var(--border);
+    opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300; color: var(--teal); line-height: 1;
+  }
+  .stat-num sup { font-size: 1rem; }
+  .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.3rem; }
+
+  /* HERO RIGHT – Awards Highlight */
+  .hero-right {
+    position: relative; z-index: 2;
+    display: flex; flex-direction: column; gap: 1.2rem;
+    opacity: 0; animation: fadeUp 0.9s 0.5s forwards;
+  }
+  .hero-award-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem 1.6rem;
+    display: flex; align-items: center; gap: 1.2rem;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .hero-award-card:hover { transform: translateX(6px); box-shadow: var(--shadow-lg); }
+  .award-medal {
+    width: 48px; height: 48px; border-radius: 12px; flex-shrink: 0;
+    display: grid; place-items: center; font-size: 1.4rem;
+  }
+  .award-medal.gold { background: rgba(184,131,42,0.12); }
+  .award-medal.teal { background: var(--teal-pale); }
+  .award-medal.blue { background: rgba(59,130,246,0.1); }
+  .award-info h4 { font-size: 0.88rem; font-weight: 500; color: var(--deep); margin-bottom: 0.2rem; }
+  .award-info p { font-size: 0.72rem; color: var(--muted); }
+  .award-year {
+    margin-left: auto; flex-shrink: 0;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.1em;
+    color: var(--teal); background: var(--teal-pale);
+    padding: 0.25rem 0.6rem; border-radius: 3px;
+  }
+
+  /* MARQUEE */
+  .marquee-section {
+    border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    overflow: hidden; padding: 1rem 0;
+    background: var(--surface);
+  }
+  .marquee-track {
+    display: flex; gap: 3.5rem;
+    animation: marquee 28s linear infinite; white-space: nowrap;
+  }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-item {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(14,107,107,0.5);
+    display: flex; align-items: center; gap: 2rem;
+  }
+  .marquee-item::after { content: '✦'; color: var(--gold); font-size: 0.5rem; }
+
+  /* SECTIONS */
+  section { position: relative; }
+  .section-label {
+    font-family: 'Space Mono', monospace; font-size: 0.68rem;
+    letter-spacing: 0.22em; text-transform: uppercase; color: var(--teal);
+    display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;
+  }
+  .section-label::before { content: ''; display: block; width: 28px; height: 1.5px; background: var(--teal); }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+    font-weight: 300; line-height: 1.12; color: var(--deep);
+  }
+  .section-title em { font-style: italic; color: var(--teal); }
+
+  /* SERVICES + AWARDS */
+  .services { padding: 7rem 5vw; background: var(--bg); }
+  .services-intro { max-width: 520px; margin-bottom: 3.5rem; }
+  .services-intro .section-title { margin-bottom: 0.8rem; }
+  .services-intro p { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+  .spec-tabs {
+    display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 2.5rem;
+  }
+  .spec-tab {
+    font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em;
+    padding: 0.55rem 1.2rem; border-radius: 50px;
+    border: 1.5px solid var(--border);
+    background: var(--surface); color: rgba(26,35,50,0.6);
+    cursor: none; transition: all 0.25s;
+  }
+  .spec-tab:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-pale); }
+  .spec-tab.active {
+    background: var(--teal); color: #fff; border-color: var(--teal);
+    box-shadow: 0 4px 14px rgba(14,107,107,0.25);
+  }
+
+  .services-layout {
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 3rem; align-items: start;
+  }
+
+  /* Service cards */
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+  .service-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 1.8rem;
+    cursor: none; transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .service-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 3px; background: linear-gradient(90deg, var(--teal), var(--teal-light));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.35s;
+  }
+  .service-card:hover::after { transform: scaleX(1); }
+  .service-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+  .service-card.highlighted { border-color: var(--teal); background: var(--teal-pale); }
+
+  .service-icon {
+    width: 46px; height: 46px; border-radius: 10px;
+    background: var(--teal-pale); border: 1px solid var(--border);
+    display: grid; place-items: center; margin-bottom: 1.2rem;
+    transition: background 0.3s;
+  }
+  .service-card:hover .service-icon, .service-card.highlighted .service-icon { background: var(--teal); }
+  .service-icon svg { width: 20px; height: 20px; stroke: var(--teal); fill: none; stroke-width: 1.6; transition: stroke 0.3s; }
+  .service-card:hover .service-icon svg, .service-card.highlighted .service-icon svg { stroke: #fff; }
+
+  .service-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 400; margin-bottom: 0.5rem; color: var(--deep); }
+  .service-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.65; }
+  .service-num { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: rgba(14,107,107,0.25); float: right; margin-bottom: 0.5rem; }
+
+  /* AWARDS PANEL */
+  .awards-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .awards-panel-header {
+    background: var(--teal); padding: 1.4rem 1.8rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .awards-panel-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 400; color: #fff;
+  }
+  .awards-panel-spec {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.12em; color: rgba(255,255,255,0.7);
+    background: rgba(255,255,255,0.15); padding: 0.25rem 0.7rem; border-radius: 3px;
+    text-transform: uppercase;
+  }
+  .awards-list { padding: 1.4rem 1.8rem; display: flex; flex-direction: column; gap: 1rem; max-height: 420px; overflow-y: auto; }
+  .awards-list::-webkit-scrollbar { width: 3px; }
+  .awards-list::-webkit-scrollbar-thumb { background: var(--teal-light); border-radius: 2px; }
+
+  .award-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    padding: 1rem; border-radius: 10px; border: 1px solid var(--border);
+    background: var(--bg); transition: all 0.25s;
+    animation: fadeIn 0.4s ease;
+  }
+  .award-item:hover { background: var(--teal-pale); border-color: var(--teal); }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .award-trophy { font-size: 1.6rem; line-height: 1; margin-top: 2px; }
+  .award-body { flex: 1; }
+  .award-title { font-size: 0.88rem; font-weight: 500; color: var(--deep); margin-bottom: 0.2rem; }
+  .award-org { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.4rem; }
+  .award-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .award-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.06em; padding: 0.2rem 0.5rem;
+    border-radius: 3px; background: var(--teal-pale);
+    color: var(--teal); border: 1px solid rgba(14,107,107,0.2);
+  }
+  .award-tag.gold-tag { background: rgba(184,131,42,0.1); color: var(--gold); border-color: rgba(184,131,42,0.25); }
+  .award-yr { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); flex-shrink: 0; margin-top: 2px; }
+
+  .awards-empty { padding: 2.5rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
+  .awards-empty span { display: block; font-size: 2rem; margin-bottom: 0.5rem; }
+
+  /* APPOINTMENT */
+  .appointment { padding: 7rem 5vw; background: var(--bg2); }
+  .appt-inner { display: grid; grid-template-columns: 1fr 1.15fr; gap: 5rem; align-items: start; }
+  .appt-left .section-title { margin-bottom: 1rem; }
+  .appt-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; margin-bottom: 2rem; max-width: 380px; }
+  .appt-feats { display: flex; flex-direction: column; gap: 0.9rem; }
+  .appt-feat { display: flex; align-items: center; gap: 0.9rem; font-size: 0.83rem; color: rgba(26,35,50,0.65); }
+  .appt-feat-icon {
+    width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0;
+    background: var(--teal-pale); border: 1px solid var(--border);
+    display: grid; place-items: center;
+  }
+  .appt-feat-icon svg { width: 15px; height: 15px; stroke: var(--teal); fill: none; stroke-width: 1.6; }
+
+  .appt-form {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 18px; padding: 2.5rem; box-shadow: var(--shadow-lg);
+  }
+  .form-title { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 300; color: var(--deep); margin-bottom: 0.4rem; }
+  .form-sub { font-size: 0.78rem; color: var(--muted); margin-bottom: 2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .form-input {
+    background: var(--bg); border: 1.5px solid rgba(14,107,107,0.15);
+    border-radius: 8px; padding: 0.8rem 1rem;
+    color: var(--deep); font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; outline: none; transition: border-color 0.25s, box-shadow 0.25s;
+    width: 100%;
+  }
+  .form-input::placeholder { color: rgba(26,35,50,0.25); }
+  .form-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(14,107,107,0.1); }
+  select.form-input { cursor: none; }
+
+  .form-submit {
+    width: 100%; background: var(--teal); color: #fff; border: none;
+    padding: 1rem; font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 500; border-radius: 8px;
+    cursor: none; margin-top: 0.5rem; transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(14,107,107,0.3);
+  }
+  .form-submit:hover { background: var(--teal-light); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(14,107,107,0.35); }
+
+  /* DOCTORS */
+  .doctors { padding: 7rem 5vw; background: var(--bg); }
+  .doctors-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3.5rem; flex-wrap: wrap; gap: 1rem; }
+  .view-all { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; color: var(--teal); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: gap 0.25s; }
+  .view-all:hover { gap: 0.9rem; }
+
+  .doctors-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem; }
+  .doctor-card {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: 14px; overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s; cursor: none;
+  }
+  .doctor-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--teal); }
+  .doctor-img {
+    height: 180px; position: relative;
+    display: flex; align-items: flex-end; padding: 1rem;
+  }
+  .doctor-avatar { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .doctor-avatar svg { width: 70px; height: 70px; opacity: 0.15; stroke: var(--teal); }
+  .doctor-spec {
+    font-family: 'Space Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.1em; color: var(--teal);
+    background: rgba(247,244,239,0.92); padding: 0.25rem 0.6rem;
+    border-radius: 3px; position: relative; z-index: 1;
+    border: 1px solid var(--border);
+  }
+  .doctor-info { padding: 1.2rem; }
+  .doctor-name { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; margin-bottom: 0.2rem; color: var(--deep); }
+  .doctor-role { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.8rem; }
+  .doctor-rating { display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; color: var(--gold); }
+  .doctor-rating span { color: var(--muted); }
+
+  /* TESTIMONIALS */
+  .testimonials { padding: 7rem 5vw; background: var(--surface); border-top: 1px solid var(--border); }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+  .testi-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 14px; padding: 2rem; transition: box-shadow 0.3s;
+  }
+  .testi-card:hover { box-shadow: var(--shadow-lg); }
+  .testi-quote { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; color: var(--teal); line-height: 0.6; margin-bottom: 1.2rem; }
+  .testi-text { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; font-weight: 300; color: rgba(26,35,50,0.7); line-height: 1.75; margin-bottom: 1.5rem; }
+  .testi-author { display: flex; align-items: center; gap: 0.8rem; }
+  .testi-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--teal); display: grid; place-items: center; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: #fff; flex-shrink: 0; }
+  .testi-name { font-size: 0.85rem; font-weight: 500; color: var(--deep); }
+  .testi-loc { font-size: 0.7rem; color: var(--muted); }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 4rem 5vw 2rem; background: var(--bg); }
+  .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+  .footer-brand p { font-size: 0.82rem; color: var(--muted); line-height: 1.75; max-width: 260px; margin-top: 1rem; }
+  .footer-col h5 { font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.65rem; }
+  .footer-col ul a { font-size: 0.82rem; color: rgba(26,35,50,0.55); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--teal); }
+  .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-copy { font-size: 0.75rem; color: var(--muted); }
+  .footer-mono { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--teal); letter-spacing: 0.1em; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    .services-layout { grid-template-columns: 1fr; }
+    .doctors-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 800px) {
+    nav { padding: 1.2rem 5vw; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+
+    .mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg); z-index: 300; flex-direction: column;
+      align-items: center; justify-content: center; gap: 2rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 1.5rem; font-family: 'Cormorant Garamond', serif; color: var(--deep); text-decoration: none; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--teal); }
+    .mobile-close { position: absolute; top: 1.5rem; right: 5vw; background: none; border: none; font-size: 1.5rem; cursor: none; color: var(--deep); }
+
+    .hero { grid-template-columns: 1fr; padding: 100px 5vw 4rem; gap: 2.5rem; }
+    .hero-right { order: -1; }
+    .hero-award-card { padding: 1rem 1.2rem; }
+
+    .services-grid { grid-template-columns: 1fr; }
+    .spec-tabs { gap: 0.4rem; }
+    .spec-tab { font-size: 0.72rem; padding: 0.45rem 0.9rem; }
+
+    .appt-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+
+    .testi-grid { grid-template-columns: 1fr; }
+    .doctors-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stats { gap: 1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title { font-size: 2.5rem; }
+    .section-title { font-size: 2rem; }
+    .doctors-grid { grid-template-columns: 1fr; }
+    .hero-actions { flex-direction: column; align-items: stretch; }
+    .btn-primary, .btn-outline { text-align: center; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#doctors" onclick="closeMobile()">Specialists</a>
+  <a href="#appointment" onclick="closeMobile()">Appointments</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#appointment" onclick="closeMobile()" style="color: var(--teal); font-weight: 600;">Book Now →</a>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M12 2v20M2 12h20" stroke-linecap="round"/></svg>
+    </div>
+    LILA
+  </div>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#doctors">Specialists</a></li>
+    <li><a href="#appointment">Appointments</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="#appointment" class="nav-cta">Book Now</a>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">Advanced Healthcare · Mumbai</p>
+    <h1 class="hero-title">
+      Precision care,<br><em>brilliantly</em><br>delivered.
+    </h1>
+    <p class="hero-sub">LILA Hospital combines clinical excellence with intelligent systems to deliver care that is as compassionate as it is precise.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.querySelector('#appointment').scrollIntoView({behavior:'smooth'})">Book Appointment</button>
+      <button class="btn-outline" onclick="document.querySelector('#services').scrollIntoView({behavior:'smooth'})">
+        Explore Services
+        <svg width="14" height="14" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num">98<sup>%</sup></div><div class="stat-label">Patient Satisfaction</div></div>
+      <div><div class="stat-num">240<sup>+</sup></div><div class="stat-label">Specialists</div></div>
+      <div><div class="stat-num">40k</div><div class="stat-label">Lives Cared For</div></div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-award-card">
+      <div class="award-medal gold">🏆</div>
+      <div class="award-info">
+        <h4>Best Cardiac Care Centre — India</h4>
+        <p>Healthcare Excellence Awards · National</p>
+      </div>
+      <div class="award-year">2024</div>
+    </div>
+    <div class="hero-award-card">
+      <div class="award-medal teal">🎖️</div>
+      <div class="award-info">
+        <h4>Top Neuro Hospital — West India</h4>
+        <p>Times Health Rankings · Regional</p>
+      </div>
+      <div class="award-year">2023</div>
+    </div>
+    <div class="hero-award-card">
+      <div class="award-medal blue">⭐</div>
+      <div class="award-info">
+        <h4>NABH Accreditation — Platinum</h4>
+        <p>National Board of Hospitals · Govt. of India</p>
+      </div>
+      <div class="award-year">2024</div>
+    </div>
+    <div class="hero-award-card">
+      <div class="award-medal gold">🥇</div>
+      <div class="award-info">
+        <h4>Best Oncology Department — Maharashtra</h4>
+        <p>Medical Council Excellence · State</p>
+      </div>
+      <div class="award-year">2023</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-item">Cardiology</div><div class="marquee-item">Neurology</div>
+    <div class="marquee-item">Oncology</div><div class="marquee-item">Orthopaedics</div>
+    <div class="marquee-item">Paediatrics</div><div class="marquee-item">Radiology</div>
+    <div class="marquee-item">Nephrology</div><div class="marquee-item">Dermatology</div>
+    <div class="marquee-item">Gynaecology</div><div class="marquee-item">Rehabilitation</div>
+    <div class="marquee-item">Cardiology</div><div class="marquee-item">Neurology</div>
+    <div class="marquee-item">Oncology</div><div class="marquee-item">Orthopaedics</div>
+    <div class="marquee-item">Paediatrics</div><div class="marquee-item">Radiology</div>
+    <div class="marquee-item">Nephrology</div><div class="marquee-item">Dermatology</div>
+    <div class="marquee-item">Gynaecology</div><div class="marquee-item">Rehabilitation</div>
+  </div>
+</div>
+
+<!-- SERVICES + INTERACTIVE AWARDS -->
+<section class="services" id="services">
+  <div class="services-intro reveal">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title">Care crafted for every <em>dimension</em> of health</h2>
+    <p>Click any speciality to explore the awards and recognitions LILA Hospital has earned in that department.</p>
+  </div>
+
+  <!-- SPECIALTY TABS -->
+  <div class="spec-tabs reveal" id="specTabs">
+    <button class="spec-tab active" data-spec="cardiology">Cardiology</button>
+    <button class="spec-tab" data-spec="neurology">Neurology</button>
+    <button class="spec-tab" data-spec="oncology">Oncology</button>
+    <button class="spec-tab" data-spec="orthopaedics">Orthopaedics</button>
+    <button class="spec-tab" data-spec="paediatrics">Paediatrics</button>
+    <button class="spec-tab" data-spec="diagnostics">Diagnostics</button>
+    <button class="spec-tab" data-spec="rehabilitation">Rehabilitation</button>
+  </div>
+
+  <div class="services-layout reveal">
+    <!-- LEFT: service cards filtered by active specialty -->
+    <div>
+      <div class="services-grid" id="servicesGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- RIGHT: Awards panel -->
+    <div>
+      <div class="awards-panel">
+        <div class="awards-panel-header">
+          <div class="awards-panel-title">🏅 Awards & Recognition</div>
+          <div class="awards-panel-spec" id="awardsSpecLabel">Cardiology</div>
+        </div>
+        <div class="awards-list" id="awardsList">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPOINTMENT -->
+<section class="appointment" id="appointment">
+  <div class="appt-inner">
+    <div class="appt-left">
+      <div class="section-label reveal">Book a Visit</div>
+      <h2 class="section-title reveal">Your health, <em>scheduled</em> with ease</h2>
+      <p class="appt-desc reveal">Reserve a consultation with our specialists in under two minutes. Select your department, preferred date, and we handle the rest.</p>
+      <div class="appt-feats reveal">
+        <div class="appt-feat">
+          <div class="appt-feat-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          Same-day appointments available
+        </div>
+        <div class="appt-feat">
+          <div class="appt-feat-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.7A2 2 0 012 .84h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16z"/></svg></div>
+          SMS & email reminders sent automatically
+        </div>
+        <div class="appt-feat">
+          <div class="appt-feat-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          100% secure & confidential
+        </div>
+      </div>
+    </div>
+
+    <div class="appt-form reveal">
+      <div class="form-title">Schedule a Consultation</div>
+      <p class="form-sub">Fill in the details below and we'll confirm within the hour.</p>
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" class="form-input" placeholder="Aryan"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" class="form-input" placeholder="Sharma"></div>
+      </div>
+      <div class="form-group"><label>Email Address</label><input type="email" class="form-input" placeholder="aryan@email.com"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone</label><input type="tel" class="form-input" placeholder="+91 98765 43210"></div>
+        <div class="form-group">
+          <label>Department</label>
+          <select class="form-input">
+            <option value="">Select Dept.</option>
+            <option>Cardiology</option><option>Neurology</option>
+            <option>Oncology</option><option>Orthopaedics</option>
+            <option>Paediatrics</option><option>General Medicine</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Preferred Date</label><input type="date" class="form-input"></div>
+        <div class="form-group">
+          <label>Time Slot</label>
+          <select class="form-input">
+            <option>Morning (9–12)</option>
+            <option>Afternoon (12–4)</option>
+            <option>Evening (4–8)</option>
+          </select>
+        </div>
+      </div>
+      <button class="form-submit" id="bookBtn">Confirm Appointment</button>
+    </div>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section class="doctors" id="doctors">
+  <div class="doctors-header reveal">
+    <div>
+      <div class="section-label">Our Team</div>
+      <h2 class="section-title" style="margin-bottom:0">Meet the <em>specialists</em></h2>
+    </div>
+    <a href="#" class="view-all">View all doctors →</a>
+  </div>
+  <div class="doctors-grid reveal">
+    <div class="doctor-card">
+      <div class="doctor-img" style="background: linear-gradient(135deg, #e6f4f4, #c8e6e6)">
+        <div class="doctor-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg></div>
+        <span class="doctor-spec">Cardiology</span>
+      </div>
+      <div class="doctor-info">
+        <div class="doctor-name">Dr. Priya Mehra</div>
+        <div class="doctor-role">Interventional Cardiologist · 18 yrs</div>
+        <div class="doctor-rating">★★★★★ <span>4.9 (312 reviews)</span></div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-img" style="background: linear-gradient(135deg, #e8eef8, #c8d8ee)">
+        <div class="doctor-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg></div>
+        <span class="doctor-spec">Neurology</span>
+      </div>
+      <div class="doctor-info">
+        <div class="doctor-name">Dr. Rahul Sinha</div>
+        <div class="doctor-role">Senior Neurologist · 22 yrs</div>
+        <div class="doctor-rating">★★★★★ <span>4.8 (274 reviews)</span></div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-img" style="background: linear-gradient(135deg, #fdecea, #f5c8c8)">
+        <div class="doctor-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg></div>
+        <span class="doctor-spec">Oncology</span>
+      </div>
+      <div class="doctor-info">
+        <div class="doctor-name">Dr. Anita Kulkarni</div>
+        <div class="doctor-role">Oncologist & Haematologist · 15 yrs</div>
+        <div class="doctor-rating">★★★★★ <span>4.9 (198 reviews)</span></div>
+      </div>
+    </div>
+    <div class="doctor-card">
+      <div class="doctor-img" style="background: linear-gradient(135deg, #eef6ee, #c8e0c8)">
+        <div class="doctor-avatar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z"/></svg></div>
+        <span class="doctor-spec">Orthopaedics</span>
+      </div>
+      <div class="doctor-info">
+        <div class="doctor-name">Dr. Vikas Nair</div>
+        <div class="doctor-role">Orthopaedic Surgeon · 20 yrs</div>
+        <div class="doctor-rating">★★★★☆ <span>4.7 (256 reviews)</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="section-label reveal">Patient Stories</div>
+  <h2 class="section-title reveal">Experiences that <em>speak</em> for themselves</h2>
+  <div class="testi-grid reveal">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">The cardiac team at LILA was extraordinary. From diagnosis to surgery to recovery, every step felt completely guided and deeply human.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RK</div>
+        <div><div class="testi-name">Rohan Kapoor</div><div class="testi-loc">Cardiac Patient · Mumbai</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">My daughter received exceptional care in the PICU. The paediatric team was not only skilled, they were genuinely kind when we needed it most.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SD</div>
+        <div><div class="testi-name">Sneha Desai</div><div class="testi-loc">Parent · Pune</div></div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p class="testi-text">The oncology team's precision and compassion turned the most frightening time of my life into something manageable. I am deeply grateful.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AM</div>
+        <div><div class="testi-name">Aisha Menon</div><div class="testi-loc">Cancer Survivor · Thane</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="about">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="nav-logo">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 24 24" stroke="#fff" stroke-width="2" fill="none"><path d="M12 2v20M2 12h20" stroke-linecap="round"/></svg>
+        </div>
+        LILA Hospital
+      </div>
+      <p>Advancing healthcare through intelligent systems, compassionate care, and a relentless commitment to human dignity.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Cardiology</a></li><li><a href="#">Neurology</a></li>
+        <li><a href="#">Oncology</a></li><li><a href="#">Diagnostics</a></li>
+        <li><a href="#">Rehabilitation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Hospital</h5>
+      <ul>
+        <li><a href="#">About Us</a></li><li><a href="#">Our Specialists</a></li>
+        <li><a href="#">Research</a></li><li><a href="#">Careers</a></li>
+        <li><a href="#">News</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <ul>
+        <li><a href="#">+91 22 6789 0000</a></li>
+        <li><a href="#">info@lilahospital.in</a></li>
+        <li><a href="#">Emergency: 108</a></li>
+        <li><a href="#">Bandra West, Mumbai</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 LILA Hospital. All rights reserved.</div>
+    <div class="footer-mono">Redefining Care · Est. 2010</div>
+  </div>
+</footer>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────
+const SPECS = {
+  cardiology: {
+    name: 'Cardiology',
+    desc: 'Advanced cardiac diagnostics and intervention from our award-winning team.',
+    icon: `<svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'Best Cardiac Care Centre — India', org: 'Healthcare Excellence Awards', year: '2024', tags: ['National', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'Top Interventional Cardiology Unit', org: 'Cardiology Society of India', year: '2023', tags: ['Regional'] },
+      { trophy: '⭐', title: 'NABH Cardiac Accreditation — Platinum', org: 'National Board of Hospitals', year: '2024', tags: ['Govt. Accreditation'], gold: true },
+      { trophy: '🥇', title: 'Innovation in Cardiac Surgery Award', org: 'Indian Medical Association', year: '2022', tags: ['Innovation'] },
+      { trophy: '🏅', title: 'Patient Safety Excellence — Cardiac', org: 'Asia Pacific Healthcare Forum', year: '2023', tags: ['Safety', 'Asia'] },
+    ]
+  },
+  neurology: {
+    name: 'Neurology',
+    desc: 'Comprehensive brain & nervous system care including stroke units and epilepsy clinics.',
+    icon: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'Top Neuro Hospital — West India', org: 'Times Health Rankings', year: '2023', tags: ['Regional', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'Stroke Centre of Excellence', org: 'Indian Stroke Association', year: '2024', tags: ['National'] },
+      { trophy: '⭐', title: 'Best Epilepsy Management Programme', org: 'Neurological Society of India', year: '2022', tags: ['Specialty'] },
+      { trophy: '🥇', title: 'Neuro-Imaging Innovation Award', org: 'Radiology Society of India', year: '2023', tags: ['Technology'] },
+    ]
+  },
+  oncology: {
+    name: 'Oncology',
+    desc: 'Precision oncology with genomic profiling and multidisciplinary tumour boards.',
+    icon: `<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'Best Oncology Department — Maharashtra', org: 'Medical Council Excellence', year: '2023', tags: ['State', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'Precision Oncology Pioneer Award', org: 'Indian Cancer Society', year: '2024', tags: ['National'] },
+      { trophy: '⭐', title: 'Top Tumour Board Programme', org: 'ESMO Asia', year: '2022', tags: ['International'] },
+      { trophy: '🥇', title: 'Patient Survival Rate — Top 5% India', org: 'Ministry of Health & Family Welfare', year: '2023', tags: ['Govt.'], gold: true },
+      { trophy: '🏅', title: 'Immunotherapy Research Excellence', org: 'Indo-German Cancer Council', year: '2024', tags: ['Research'] },
+    ]
+  },
+  orthopaedics: {
+    name: 'Orthopaedics',
+    desc: 'Joint replacement, spine surgery, and sports medicine by leading orthopaedic surgeons.',
+    icon: `<svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'Best Joint Replacement Centre', org: 'Orthopaedic Society of India', year: '2024', tags: ['National', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'Minimally Invasive Spine Surgery Award', org: 'Spine Society of India', year: '2023', tags: ['Specialty'] },
+      { trophy: '⭐', title: 'Sports Medicine Excellence', org: 'Indian Olympic Association', year: '2022', tags: ['Sports'] },
+    ]
+  },
+  paediatrics: {
+    name: 'Paediatrics',
+    desc: 'Dedicated child health from neonatology and PICU to adolescent medicine.',
+    icon: `<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'Best Paediatric Hospital — Mumbai', org: 'Child Health Foundation', year: '2024', tags: ['City', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'PICU Excellence Award', org: 'Indian Academy of Paediatrics', year: '2023', tags: ['National'] },
+      { trophy: '⭐', title: 'Neonatal Care Centre of the Year', org: 'NNF India', year: '2022', tags: ['National'] },
+      { trophy: '🏅', title: 'Child-Friendly Hospital Certification', org: 'UNICEF India', year: '2024', tags: ['International'], gold: true },
+    ]
+  },
+  diagnostics: {
+    name: 'Diagnostics',
+    desc: '3T MRI, 256-slice CT, PET-CT and AI-assisted radiology for faster diagnoses.',
+    icon: `<svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'AI Radiology Innovation Award', org: 'Radiology Society of India', year: '2024', tags: ['Technology', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'Best Diagnostic Centre — India', org: 'Healthcare Federation of India', year: '2023', tags: ['National'] },
+      { trophy: '⭐', title: 'Digital Pathology Leadership Award', org: 'Asia-Pacific Pathology Conf.', year: '2022', tags: ['International'] },
+    ]
+  },
+  rehabilitation: {
+    name: 'Rehabilitation',
+    desc: 'Evidence-based physio, occupational therapy, and speech pathology.',
+    icon: `<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    awards: [
+      { trophy: '🏆', title: 'Best Rehabilitation Unit — West India', org: 'ISPMR Conference', year: '2023', tags: ['Regional', 'Gold'], gold: true },
+      { trophy: '🎖️', title: 'Stroke Rehabilitation Excellence', org: 'Indian Stroke Association', year: '2024', tags: ['Specialty'] },
+      { trophy: '⭐', title: 'Patient Recovery Outcome Award — Top 3%', org: 'Ministry of Health', year: '2023', tags: ['Govt.'] },
+    ]
+  }
+};
+
+// ── RENDER SERVICES GRID ──────────────────────────────────────
+function renderServices(activeSpec) {
+  const grid = document.getElementById('servicesGrid');
+  const keys = Object.keys(SPECS);
+  grid.innerHTML = keys.map(key => {
+    const s = SPECS[key];
+    const isActive = key === activeSpec;
+    return `
+      <div class="service-card${isActive ? ' highlighted' : ''}" data-spec="${key}" onclick="selectSpec('${key}')">
+        <span class="service-num">${(keys.indexOf(key)+1).toString().padStart(2,'0')}</span>
+        <div class="service-icon">${s.icon}</div>
+        <div class="service-name">${s.name}</div>
+        <p class="service-desc">${s.desc}</p>
+      </div>`;
+  }).join('');
+}
+
+// ── RENDER AWARDS PANEL ───────────────────────────────────────
+function renderAwards(spec) {
+  const data = SPECS[spec];
+  document.getElementById('awardsSpecLabel').textContent = data.name;
+  const list = document.getElementById('awardsList');
+  if (!data.awards || data.awards.length === 0) {
+    list.innerHTML = `<div class="awards-empty"><span>🏅</span>No awards on record yet.</div>`;
+    return;
+  }
+  list.innerHTML = data.awards.map(a => `
+    <div class="award-item">
+      <div class="award-trophy">${a.trophy}</div>
+      <div class="award-body">
+        <div class="award-title">${a.title}</div>
+        <div class="award-org">${a.org}</div>
+        <div class="award-tags">
+          ${a.tags.map(t => `<span class="award-tag${a.gold ? ' gold-tag' : ''}">${t}</span>`).join('')}
+        </div>
+      </div>
+      <div class="award-yr">${a.year}</div>
+    </div>`).join('');
+}
+
+// ── SELECT SPECIALTY ─────────────────────────────────────────
+function selectSpec(spec) {
+  // Update tabs
+  document.querySelectorAll('.spec-tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.spec === spec);
+  });
+  renderServices(spec);
+  renderAwards(spec);
+  // Smooth scroll awards into view on mobile
+  if (window.innerWidth < 800) {
+    document.querySelector('.awards-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+selectSpec('cardiology');
+
+// Tab clicks
+document.getElementById('specTabs').addEventListener('click', e => {
+  const tab = e.target.closest('.spec-tab');
+  if (tab) selectSpec(tab.dataset.spec);
+});
+
+// ── CUSTOM CURSOR ────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.transform = `translate(${mx-5}px,${my-5}px)`;
+});
+(function animRing() {
+  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+  ring.style.transform = `translate(${rx-17}px,${ry-17}px)`;
+  requestAnimationFrame(animRing);
+})();
+document.querySelectorAll('button,a,.service-card,.doctor-card,.spec-tab').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.style.transform += ' scale(1.6)');
+});
+
+// ── SCROLL REVEAL ────────────────────────────────────────────
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ── NAV SHRINK ───────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').style.padding = window.scrollY > 50 ? '1rem 5vw' : '1.6rem 5vw';
+});
+
+// ── MOBILE MENU ──────────────────────────────────────────────
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.add('open');
+});
+document.getElementById('mobileClose').addEventListener('click', () => {
+  document.getElementById('mobileMenu').classList.remove('open');
+});
+function closeMobile() { document.getElementById('mobileMenu').classList.remove('open'); }
+
+// ── BOOK BUTTON ──────────────────────────────────────────────
+document.getElementById('bookBtn').addEventListener('click', function() {
+  this.textContent = '✓ Appointment Requested';
+  this.style.background = '#22c55e';
+  this.style.boxShadow = '0 6px 20px rgba(34,197,94,0.3)';
+});
+</script>
+</body>
+</html>
